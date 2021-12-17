@@ -1,0 +1,9 @@
+*.pyc
+**/.DS_Store
+output/
+cache/
+tf_log/
+data/ScSR2/
+data/yang_general/
+data/yang_general4/
+\.idea/
