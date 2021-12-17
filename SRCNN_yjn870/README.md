@@ -7,10 +7,17 @@ Code original : https://github.com/yjn870/SRCNN-pytorch
 
 ## Contributions
 
-Travail principalement dans train.py :
+train.py :
 - ajout des commentaires
 - ajout sauvegarde des résultats : lignes 69-71 et 124-131
 - remplacement de la ligne 37 par device = torch.device("cuda") suite à des problèmes avec Google Colab
+
+test.py :
+- ajout de mesure de temps : lignes 34, 45 et 58
+- affichage des temps : lignes 63-65
+
+models.py :
+- ajout mesure de temps dans le forward (pour faire des tests)
 
 ## Dépendances
 
