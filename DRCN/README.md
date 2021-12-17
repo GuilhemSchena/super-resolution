@@ -40,6 +40,7 @@ python main.py --data_dir "..../datasets"
                --nb_epochs 300 
                --batch_num 16              
 ```
+Les paramètres utilisés pour l'entraînement ou les tests ne sont pas forcément ceux par défaut dans le code
 
 ## Test
 
