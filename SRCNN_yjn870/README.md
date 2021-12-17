@@ -48,6 +48,7 @@ python train.py --train-file "dossier_avec_le_images_préparées/91-image_x2.h5"
                 --num-workers 8 \
                 --seed 123                
 ```
+Les paramètres utilisés pour l'entraînement ou les tests ne sont pas forcément ceux par défaut dans le code
 
 ## Test
 
