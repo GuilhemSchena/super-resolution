@@ -1,15 +1,24 @@
-# FSRCNN
+# SRCNN
 
-This repository is implementation of the ["Accelerating the Super-Resolution Convolutional Neural Network"](https://arxiv.org/abs/1608.00367).
+Papier :  Chao Dong, Chen Change Loy, Xiaoou Tang, Accelerating the super-resolution convolutional neural network, 2016
+https://arxiv.org/abs/1608.00367
 
-<center><img src="./thumbnails/fig1.png"></center>
+Code original : https://github.com/yjn870/FSRCNN-pytorch
 
-## Differences from the original
+## Contributions
 
-- Added the zero-padding
-- Used the Adam instead of the SGD
+train.py :
+- ajout des commentaires
+- ajout sauvegarde des résultats : lignes 70-72 et 124-131
 
-## Requirements
+test.py :
+- ajout de mesure de temps : lignes 48, 50 et 59
+- affichage des temps : lignes 64-65
+
+models.py :
+- ajout mesure de temps dans le forward (pour faire des tests) : lignes 26, 42, 46 et 47
+
+## Dépendances
 
 - PyTorch 1.0.0
 - Numpy 1.15.4
@@ -17,94 +26,32 @@ This repository is implementation of the ["Accelerating the Super-Resolution Con
 - h5py 2.8.0
 - tqdm 4.30.0
 
-## Train
+## Entraînement
 
-The 91-image, Set5 dataset converted to HDF5 can be downloaded from the links below.
-
-| Dataset | Scale | Type | Link |
-|---------|-------|------|------|
-| 91-image | 2 | Train | [Download](https://www.dropbox.com/s/01z95js39kgw1qv/91-image_x2.h5?dl=0) |
-| 91-image | 3 | Train | [Download](https://www.dropbox.com/s/qx4swlt2j7u4twr/91-image_x3.h5?dl=0) |
-| 91-image | 4 | Train | [Download](https://www.dropbox.com/s/vobvi2nlymtvezb/91-image_x4.h5?dl=0) |
-| Set5 | 2 | Eval | [Download](https://www.dropbox.com/s/4kzqmtqzzo29l1x/Set5_x2.h5?dl=0) |
-| Set5 | 3 | Eval | [Download](https://www.dropbox.com/s/kyhbhyc5a0qcgnp/Set5_x3.h5?dl=0) |
-| Set5 | 4 | Eval | [Download](https://www.dropbox.com/s/ihtv1acd48cof14/Set5_x4.h5?dl=0) |
-
-Otherwise, you can use `prepare.py` to create custom dataset.
+Préparer les données avant avec prepare.py :
 
 ```bash
-python train.py --train-file "BLAH_BLAH/91-image_x3.h5" \
-                --eval-file "BLAH_BLAH/Set5_x3.h5" \
-                --outputs-dir "BLAH_BLAH/outputs" \
-                --scale 3 \
+python prepare.py --images-dir "/dossier_avec_les_images" \
+                  --output-path "/dossier_avec_le_images_préparées" \
+                  --eval "False" \
+```
+
+```bash
+python train.py --train-file "dossier_avec_le_images_préparées/91-image_x2.h5" \
+                --eval-file "dossier_avec_le_images_préparées/Set5_x2.h5" \
+                --outputs-dir "/outputs" \
+                --scale 2 \
                 --lr 1e-3 \
                 --batch-size 16 \
-                --num-epochs 20 \
+                --num-epochs 300 \
                 --num-workers 8 \
                 --seed 123                
 ```
 
 ## Test
 
-Pre-trained weights can be downloaded from the links below.
-
-| Model | Scale | Link |
-|-------|-------|------|
-| FSRCNN(56,12,4) | 2 | [Download](https://www.dropbox.com/s/1k3dker6g7hz76s/fsrcnn_x2.pth?dl=0) |
-| FSRCNN(56,12,4) | 3 | [Download](https://www.dropbox.com/s/pm1ed2nyboulz5z/fsrcnn_x3.pth?dl=0) |
-| FSRCNN(56,12,4) | 4 | [Download](https://www.dropbox.com/s/vsvumpopupdpmmu/fsrcnn_x4.pth?dl=0) |
-
-The results are stored in the same path as the query image.
-
 ```bash
-python test.py --weights-file "BLAH_BLAH/fsrcnn_x3.pth" \
-               --image-file "data/butterfly_GT.bmp" \
-               --scale 3
+python test.py --weights-file "weights/91-image_x2_weights/x2/best.pth" \
+               --image-file "data/Set5/butterfly.png" \
+               --scale 2
 ```
-
-## Results
-
-PSNR was calculated on the Y channel.
-
-### Set5
-
-| Eval. Mat | Scale | Paper | Ours (91-image) |
-|-----------|-------|-------|-----------------|
-| PSNR | 2 | 36.94 | 37.12 |
-| PSNR | 3 | 33.06 | 33.22 |
-| PSNR | 4 | 30.55 | 30.50 |
-
-<table>
-    <tr>
-        <td><center>Original</center></td>
-        <td><center>BICUBIC x3</center></td>
-        <td><center>FSRCNN x3 (34.66 dB)</center></td>
-    </tr>
-    <tr>
-    	<td>
-    		<center><img src="./data/lenna.bmp""></center>
-    	</td>
-    	<td>
-    		<center><img src="./data/lenna_bicubic_x3.bmp"></center>
-    	</td>
-    	<td>
-    		<center><img src="./data/lenna_fsrcnn_x3.bmp"></center>
-    	</td>
-    </tr>
-    <tr>
-        <td><center>Original</center></td>
-        <td><center>BICUBIC x3</center></td>
-        <td><center>FSRCNN x3 (28.55 dB)</center></td>
-    </tr>
-    <tr>
-    	<td>
-    		<center><img src="./data/butterfly_GT.bmp""></center>
-    	</td>
-    	<td>
-    		<center><img src="./data/butterfly_GT_bicubic_x3.bmp"></center>
-    	</td>
-    	<td>
-    		<center><img src="./data/butterfly_GT_fsrcnn_x3.bmp"></center>
-    	</td>
-    </tr>
-</table>
