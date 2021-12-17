@@ -32,7 +32,7 @@ models.py :
 Les données sont préparées directement dans train.py
 
 ```bash
-python main.py --data_dir "/content/drive/MyDrive/SYS843/Github/sr/datasets"
+python main.py --data_dir "..../datasets"
                --training_set "ScSR" 
                --stride_size 14 
                --batch_size 33 
