@@ -1,4 +1,4 @@
-# SRCNN
+# FSRCNN
 
 Papier :  Chao Dong, Chen Change Loy, Xiaoou Tang, Accelerating the super-resolution convolutional neural network, 2016
 https://arxiv.org/abs/1608.00367
